@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+
+{% block title %}Student List{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Student List</h1>
+
+    <div class="row">
+        {% for student in students %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        {% if student.profile_pic %}
+                            <img src="{{ student.profile_pic.url }}" class='img-fluid mb-3' alt="{{ student.first_name }} {{ student.last_name }}" style="height: 200px;">
+                        {% else %}
+                            <img src='https://via.placeholder.com/300x200' class='img-fluid mb-3' alt="{{ student.first_name }} {{ student.last_name }}">
+                        {% endif %}
+                    
+                        <h5 class="card-title">{{ student.first_name }} {{ student.last_name }}  
+                            <td>
+                                {% if student.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactive</span>
+                                {% endif %}
+                            </td>
+                        </h5>
+                        <h6 class="card-subtitle text-muted mb-2"><strong>ID :</strong>{{ student.ID_number }}</h6>
+                        <p class="card-text"><strong>Course :</strong>{{ student.course|truncatechars:100 }}</p>
+                        <p><strong>Program :</strong> {{ student.program_name }}</p>
+
+                        <a href="{% url 'edit_information' student.pk %}" class="btn btn-success btn-sm">Edit</a>
+                        <a href="{% url 'delete_information' student.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'student_detail' student.pk %}" class="btn btn-secondary btn-sm">View</a>
+                        
+                    </div>
+                </div>
+            </div>
+
+            
+        {% empty %}
+            <p class="text-center">No Student available.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
